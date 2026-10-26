@@ -39,8 +39,36 @@ def root_path(p):
     return p if os.path.isabs(p) else os.path.join(ROOT, p)
 
 
+def build_banner_from(game):
+    """Keeps an existing banner (the decrypted content 0 of a channel you made or own), repacked
+    cleanly with the new title. icon_art (optional): a 128x96 picture for the Wii Menu tile."""
+    old = vcbanner.wb.imet_unpack(open(root_path(game["banner_from"]), "rb").read())
+    arc, sizes = {}, {}
+    for part in ("banner", "icon"):
+        files = vcbanner.wb.u8_unpack(vcbanner.wb.imd5_unwrap(old["meta/%s.bin" % part]))
+        if part == "icon" and game.get("icon_art"):
+            if "arc/timg/icon.tpl" not in files:
+                raise SystemExit("icon_art needs a banner with arc/timg/icon.tpl (170x96 RGB565)")
+            # the Wii Menu shows only the middle ~128 px of the 170 px tile picture:
+            # the 128x96 art goes in the middle, its edge columns are stretched out to the sides
+            a = Image.open(root_path(game["icon_art"])).convert("RGB").resize((128, 96), Image.LANCZOS)
+            t = Image.new("RGB", (170, 96))
+            t.paste(a.crop((0, 0, 1, 96)).resize((21, 96)), (0, 0))
+            t.paste(a, (21, 0))
+            t.paste(a.crop((127, 0, 128, 96)).resize((21, 96)), (149, 0))
+            files["arc/timg/icon.tpl"] = vcbanner.wb.rgb565_tpl_replace(files["arc/timg/icon.tpl"], t)
+        u8 = vcbanner.wb.u8_pack(files)
+        sizes[part] = len(u8)
+        arc["meta/%s.bin" % part] = vcbanner.wb.imd5_wrap(u8)
+    arc["meta/sound.bin"] = old["meta/sound.bin"]
+    arc = {k: arc[k] for k in ("meta/banner.bin", "meta/icon.bin", "meta/sound.bin")}
+    return vcbanner.wb.imet_pack(arc, game["title"][:40], sizes["icon"], sizes["banner"])
+
+
 def build_banner(game):
-    shot = root_path(game.get("title_screen", os.path.join("art", "titles", game["key"] + ".png")))
+    if game.get("banner_from"):
+        return build_banner_from(game)
+    shot =root_path(game.get("title_screen", os.path.join("art", "titles", game["key"] + ".png")))
     if not os.path.exists(shot):
         raise SystemExit("no title screen picture: %s" % shot)
     return vcbanner.build(game, Image.open(shot), save_png=os.path.join(ROOT, "out", "vc_" + game["key"]))

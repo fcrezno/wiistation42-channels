@@ -84,6 +84,8 @@ The WAD goes to `out/`. Copy it to your SD card or USB drive and install it with
 | `own_card` | optional: the game gets its own card file (for a mod with the same disc ID as the original game) |
 | `reload_ios` | optional: reload IOS58 before the emulator starts |
 | `title_screen` | optional: path to the title-screen picture |
+| `banner_from` | optional: keep an existing banner instead of the VC look: the decrypted content 0 (`.app`) of a channel you made or own (for example an app channel) |
+| `icon_art` | optional, with `banner_from`: a 128x96 picture for the Wii Menu tile |
 | `nincfg` | optional: path to nincfg.bin (default `nincfg.bin`) |
 
 ## Things we found (read before you file a bug)
