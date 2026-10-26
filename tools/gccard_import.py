@@ -7,10 +7,12 @@ Nintendont's emulated card. NOT yet tested on hardware: keep a backup of both ca
 
 Card layout and checksums: see gccard_repack.py.
 """
+import os
 import struct
 import sys
 
-import gccard_repack as g
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import gccard_repack as g  # noqa: E402
 
 B = g.B
 
