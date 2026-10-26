@@ -1,0 +1,45 @@
+{
+  "pikmin": {
+    "id": "WSG6",
+    "title": "Pikmin",
+    "system": "NINTENDO GAMECUBE",
+    "kind": "nintendont",
+    "dol": "usb:/apps/nintendont/boot.dol",
+    "gamepath": "/games/Pikmin [GPIE01]/game.iso",
+    "id6": "GPIE01",
+    "year": 2001,
+    "players": 1,
+    "esrb": "Everyone",
+    "memcard_blocks_code": 2
+  },
+  "chrono": {
+    "id": "WSCT",
+    "title": "Chrono Trigger",
+    "system": "SUPER NINTENDO",
+    "kind": "emu",
+    "dol": "sd:/apps/snes9xgx/boot.dol",
+    "args": [
+      "sd:/apps/snes9xgx/boot.dol",
+      "usb:/snes9xgx/roms/",
+      "Chrono Trigger (USA)"
+    ],
+    "year": 1995,
+    "players": 1,
+    "esrb": "Everyone"
+  },
+  "dw3": {
+    "id": "WSD3",
+    "title": "Dragon Warrior III",
+    "system": "GAME BOY COLOR",
+    "kind": "emu",
+    "dol": "sd:/apps/vbagx/boot.dol",
+    "args": [
+      "sd:/apps/vbagx/boot.dol",
+      "usb:/vbagx/roms/gbc/",
+      "Dragon Warrior III (USA)"
+    ],
+    "year": 2001,
+    "players": 1,
+    "esrb": "Everyone"
+  }
+}
